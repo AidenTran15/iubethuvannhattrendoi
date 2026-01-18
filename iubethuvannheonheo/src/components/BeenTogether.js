@@ -5,6 +5,7 @@ import './BeenTogether.css';
 function BeenTogether() {
   const navigate = useNavigate();
   const [timeTogether, setTimeTogether] = useState({
+    months: 0,
     days: 0,
     hours: 0,
     minutes: 0,
@@ -20,15 +21,33 @@ function BeenTogether() {
       const diff = now - startDate;
 
       if (diff > 0) {
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        // Tính số tháng
+        let months = 0;
+        let tempDate = new Date(startDate);
+        while (tempDate < now) {
+          tempDate.setMonth(tempDate.getMonth() + 1);
+          if (tempDate <= now) {
+            months++;
+          } else {
+            tempDate.setMonth(tempDate.getMonth() - 1);
+            break;
+          }
+        }
 
-        setTimeTogether({ days, hours, minutes, seconds });
+        // Tính số ngày còn lại sau khi trừ tháng
+        const dateAfterMonths = new Date(startDate);
+        dateAfterMonths.setMonth(dateAfterMonths.getMonth() + months);
+        const daysDiff = now - dateAfterMonths;
+        
+        const days = Math.floor(daysDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((daysDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((daysDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((daysDiff % (1000 * 60)) / 1000);
+
+        setTimeTogether({ months, days, hours, minutes, seconds });
       } else {
         // Nếu chưa đến ngày bắt đầu
-        setTimeTogether({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setTimeTogether({ months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     };
 
@@ -92,6 +111,13 @@ function BeenTogether() {
 
         <div className="time-display">
           <div className="time-card">
+            <div className="time-number">{timeTogether.months}</div>
+            <div className="time-label">Tháng</div>
+          </div>
+          
+          <div className="time-separator">:</div>
+          
+          <div className="time-card">
             <div className="time-number">{timeTogether.days}</div>
             <div className="time-label">Ngày</div>
           </div>
@@ -116,22 +142,6 @@ function BeenTogether() {
             <div className="time-number">{String(timeTogether.seconds).padStart(2, '0')}</div>
             <div className="time-label">Giây</div>
           </div>
-        </div>
-
-        <div className="total-hours-box">
-          <div className="total-hours-content">
-            <span className="total-label">Tổng số giờ</span>
-            <span className="total-value">
-              {Math.floor(
-                (timeTogether.days * 24) + timeTogether.hours + 
-                (timeTogether.minutes / 60) + (timeTogether.seconds / 3600)
-              ).toLocaleString()}
-            </span>
-          </div>
-        </div>
-
-        <div className="love-message">
-          <p>💕 Mỗi giây phút bên nhau đều là một món quà quý giá 💕</p>
         </div>
       </div>
     </div>

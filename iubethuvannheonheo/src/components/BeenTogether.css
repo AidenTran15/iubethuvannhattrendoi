@@ -303,9 +303,10 @@
 }
 
 .time-card:nth-child(1) { animation-delay: 0s; }
-.time-card:nth-child(3) { animation-delay: 0.5s; }
-.time-card:nth-child(5) { animation-delay: 1s; }
-.time-card:nth-child(7) { animation-delay: 1.5s; }
+.time-card:nth-child(3) { animation-delay: 0.4s; }
+.time-card:nth-child(5) { animation-delay: 0.8s; }
+.time-card:nth-child(7) { animation-delay: 1.2s; }
+.time-card:nth-child(9) { animation-delay: 1.6s; }
 
 @keyframes cardPulse {
   0%, 100% {
@@ -350,63 +351,6 @@
   margin: 0 -10px;
 }
 
-.total-hours-box {
-  background: linear-gradient(135deg, 
-    #ff6b9d 0%, 
-    #ff8fab 50%,
-    #ffb6c1 100%);
-  padding: 30px;
-  border-radius: 25px;
-  text-align: center;
-  margin-bottom: 30px;
-  box-shadow: 
-    0 15px 35px rgba(255, 105, 180, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.total-hours-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.total-label {
-  font-family: 'Poppins', sans-serif;
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.total-value {
-  font-family: 'Poppins', sans-serif;
-  font-size: 42px;
-  font-weight: 700;
-  color: white;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.love-message {
-  text-align: center;
-  padding: 25px;
-  background: linear-gradient(135deg, 
-    rgba(255, 182, 193, 0.1) 0%,
-    rgba(255, 192, 203, 0.05) 100%);
-  border-radius: 20px;
-  border: 2px solid rgba(255, 182, 193, 0.2);
-}
-
-.love-message p {
-  font-family: 'Dancing Script', cursive;
-  font-size: 24px;
-  color: #8b4a6b;
-  margin: 0;
-  font-weight: 500;
-  text-shadow: 0 2px 5px rgba(255, 182, 193, 0.2);
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   .together-content {
@@ -437,14 +381,6 @@
   .time-separator {
     font-size: 32px;
     margin: 0 -5px;
-  }
-
-  .total-value {
-    font-size: 36px;
-  }
-
-  .love-message p {
-    font-size: 20px;
   }
 }
 
@@ -489,13 +425,5 @@
 
   .date-value {
     font-size: 26px;
-  }
-
-  .total-value {
-    font-size: 30px;
-  }
-
-  .love-message p {
-    font-size: 18px;
   }
 }
