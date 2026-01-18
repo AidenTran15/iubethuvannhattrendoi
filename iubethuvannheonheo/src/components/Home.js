@@ -7,20 +7,63 @@ function Home() {
 
   return (
     <div className="home-container">
+      {/* Floating hearts background */}
+      <div className="floating-hearts">
+        <span className="heart">💖</span>
+        <span className="heart">💕</span>
+        <span className="heart">💗</span>
+        <span className="heart">💝</span>
+        <span className="heart">💞</span>
+        <span className="heart">💓</span>
+        <span className="heart">💟</span>
+        <span className="heart">💖</span>
+      </div>
+
+      {/* Sparkles effect */}
+      <div className="sparkles">
+        {[...Array(25)].map((_, i) => (
+          <div key={i} className="sparkle" style={{
+            left: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 3}s`,
+            animationDuration: `${3 + Math.random() * 2}s`
+          }}></div>
+        ))}
+      </div>
+
       <div className="home-content">
-        <h1 className="home-title">Trang Chủ</h1>
+        <div className="welcome-section">
+          <div className="main-heart">💕</div>
+          <h1 className="home-title">Welcome Back</h1>
+          <p className="home-subtitle">Chọn một trong những điều đặc biệt của chúng ta</p>
+        </div>
+        
         <div className="buttons-container">
           <button 
             className="home-button memory-button"
             onClick={() => navigate('/our-memory')}
           >
-            Our Memory
+            <div className="button-content">
+              <span className="button-icon">📸</span>
+              <div className="button-text">
+                <span className="button-title">Our Memory</span>
+                <span className="button-subtitle">Kỷ niệm của chúng ta</span>
+              </div>
+            </div>
+            <div className="button-glow"></div>
           </button>
+          
           <button 
             className="home-button together-button"
             onClick={() => navigate('/been-together')}
           >
-            Been Together
+            <div className="button-content">
+              <span className="button-icon">💑</span>
+              <div className="button-text">
+                <span className="button-title">Been Together</span>
+                <span className="button-subtitle">Thời gian bên nhau</span>
+              </div>
+            </div>
+            <div className="button-glow"></div>
           </button>
         </div>
       </div>
@@ -29,4 +72,3 @@ function Home() {
 }
 
 export default Home;
-

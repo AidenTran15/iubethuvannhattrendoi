@@ -1,20 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
 .home-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, 
+    #ffeef8 0%, 
+    #fff0f5 25%,
+    #ffe4e1 50%,
+    #ffeef8 75%,
+    #fff0f5 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Floating hearts */
+.floating-hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.floating-hearts .heart {
+  position: absolute;
+  font-size: 32px;
+  opacity: 0.35;
+  animation: float 20s infinite ease-in-out;
+}
+
+.floating-hearts .heart:nth-child(1) {
+  left: 5%;
+  animation-delay: 0s;
+  animation-duration: 18s;
+}
+
+.floating-hearts .heart:nth-child(2) {
+  left: 20%;
+  animation-delay: 2s;
+  animation-duration: 22s;
+}
+
+.floating-hearts .heart:nth-child(3) {
+  left: 35%;
+  animation-delay: 4s;
+  animation-duration: 20s;
+}
+
+.floating-hearts .heart:nth-child(4) {
+  left: 50%;
+  animation-delay: 6s;
+  animation-duration: 19s;
+}
+
+.floating-hearts .heart:nth-child(5) {
+  left: 65%;
+  animation-delay: 8s;
+  animation-duration: 21s;
+}
+
+.floating-hearts .heart:nth-child(6) {
+  left: 80%;
+  animation-delay: 10s;
+  animation-duration: 23s;
+}
+
+.floating-hearts .heart:nth-child(7) {
+  left: 95%;
+  animation-delay: 12s;
+  animation-duration: 17s;
+}
+
+.floating-hearts .heart:nth-child(8) {
+  left: 15%;
+  animation-delay: 14s;
+  animation-duration: 24s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(100vh) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.35;
+  }
+  90% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* Sparkles effect */
+.sparkles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sparkle {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: sparkle 3s infinite ease-in-out;
+  box-shadow: 0 0 8px rgba(255, 182, 193, 0.8);
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: translateY(0) scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-30px) scale(1);
+  }
 }
 
 .home-content {
   text-align: center;
+  position: relative;
+  z-index: 2;
+  animation: fadeInUp 0.8s ease-out;
+  max-width: 900px;
+  width: 100%;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.welcome-section {
+  margin-bottom: 60px;
+}
+
+.main-heart {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: heartbeat 2s ease-in-out infinite;
+  display: inline-block;
+  filter: drop-shadow(0 10px 20px rgba(255, 105, 180, 0.3));
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10%, 30% {
+    transform: scale(1.1);
+  }
+  20%, 40% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 .home-title {
-  color: #333;
-  font-size: 48px;
-  margin-bottom: 50px;
+  font-family: 'Dancing Script', cursive;
+  color: #8b4a6b;
+  font-size: 64px;
+  margin-bottom: 15px;
   font-weight: 700;
+  text-shadow: 
+    2px 2px 4px rgba(255, 182, 193, 0.3),
+    0 0 20px rgba(255, 182, 193, 0.2);
+  letter-spacing: 2px;
+  animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  from {
+    text-shadow: 
+      2px 2px 4px rgba(255, 182, 193, 0.3),
+      0 0 20px rgba(255, 182, 193, 0.2);
+  }
+  to {
+    text-shadow: 
+      2px 2px 4px rgba(255, 182, 193, 0.5),
+      0 0 30px rgba(255, 182, 193, 0.4);
+  }
+}
+
+.home-subtitle {
+  font-family: 'Poppins', sans-serif;
+  color: #a67a8b;
+  font-size: 18px;
+  font-weight: 400;
+  opacity: 0.9;
 }
 
 .buttons-container {
@@ -25,37 +228,208 @@
 }
 
 .home-button {
-  padding: 20px 40px;
-  font-size: 20px;
-  font-weight: 600;
+  position: relative;
+  padding: 0;
   border: none;
-  border-radius: 15px;
+  border-radius: 25px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 280px;
+  overflow: hidden;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.button-content {
+  position: relative;
+  z-index: 2;
+  padding: 35px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  transition: transform 0.3s ease;
+}
+
+.button-icon {
+  font-size: 50px;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.button-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.button-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 32px;
+  font-weight: 700;
   color: white;
-  min-width: 200px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+}
+
+.button-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.button-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    rgba(255, 255, 255, 0.4) 0%,
+    transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  pointer-events: none;
+}
+
+.home-button:hover .button-glow {
+  width: 400px;
+  height: 400px;
 }
 
 .memory-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, 
+    #667eea 0%, 
+    #764ba2 50%,
+    #8b7ae8 100%);
 }
 
 .memory-button:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 
+    0 25px 50px rgba(102, 126, 234, 0.5),
+    0 10px 25px rgba(118, 75, 162, 0.4);
+}
+
+.memory-button:hover .button-icon {
+  transform: scale(1.15) rotate(5deg);
+}
+
+.memory-button:hover .button-content {
+  transform: translateY(-3px);
 }
 
 .together-button {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, 
+    #ff6b9d 0%, 
+    #ff8fab 50%,
+    #ffb6c1 100%);
 }
 
 .together-button:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 40px rgba(245, 87, 108, 0.4);
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 
+    0 25px 50px rgba(255, 105, 180, 0.5),
+    0 10px 25px rgba(255, 20, 147, 0.4);
+}
+
+.together-button:hover .button-icon {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+.together-button:hover .button-content {
+  transform: translateY(-3px);
 }
 
 .home-button:active {
-  transform: translateY(-2px);
+  transform: translateY(-4px) scale(1.01);
 }
 
+.home-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent);
+  transition: left 0.5s ease;
+  z-index: 1;
+}
+
+.home-button:hover::before {
+  left: 100%;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .home-title {
+    font-size: 48px;
+  }
+
+  .main-heart {
+    font-size: 60px;
+  }
+
+  .home-subtitle {
+    font-size: 16px;
+  }
+
+  .buttons-container {
+    gap: 20px;
+  }
+
+  .home-button {
+    min-width: 100%;
+    max-width: 350px;
+  }
+
+  .button-content {
+    padding: 30px 35px;
+  }
+
+  .button-icon {
+    font-size: 45px;
+  }
+
+  .button-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-title {
+    font-size: 40px;
+  }
+
+  .main-heart {
+    font-size: 50px;
+  }
+
+  .welcome-section {
+    margin-bottom: 40px;
+  }
+
+  .button-content {
+    padding: 25px 30px;
+  }
+
+  .button-icon {
+    font-size: 40px;
+  }
+
+  .button-title {
+    font-size: 26px;
+  }
+
+  .button-subtitle {
+    font-size: 12px;
+  }
+}
