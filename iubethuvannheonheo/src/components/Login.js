@@ -24,20 +24,52 @@ function Login({ setIsAuthenticated }) {
 
   return (
     <div className="login-container">
+      {/* Floating hearts background */}
+      <div className="floating-hearts">
+        <span className="heart">💖</span>
+        <span className="heart">💕</span>
+        <span className="heart">💗</span>
+        <span className="heart">💝</span>
+        <span className="heart">💞</span>
+        <span className="heart">💓</span>
+        <span className="heart">💟</span>
+        <span className="heart">💖</span>
+      </div>
+
+      {/* Sparkles effect */}
+      <div className="sparkles">
+        {[...Array(20)].map((_, i) => (
+          <div key={i} className="sparkle" style={{
+            left: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 3}s`,
+            animationDuration: `${3 + Math.random() * 2}s`
+          }}></div>
+        ))}
+      </div>
+
       <div className="login-box">
-        <h1 className="login-title">Nhập Mật Khẩu</h1>
+        <div className="heart-icon">💕</div>
+        <h1 className="login-title">The Day We Got Together</h1>
+        <p className="login-subtitle">Nhập mật khẩu để tiếp tục</p>
         <form onSubmit={handleSubmit} className="login-form">
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Nhập mật khẩu..."
-            className="password-input"
-            autoFocus
-          />
+          <div className="input-wrapper">
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError('');
+              }}
+              placeholder="Nhập mật khẩu..."
+              className="password-input"
+              autoFocus
+            />
+            <span className="input-icon">🔒</span>
+          </div>
           {error && <p className="error-message">{error}</p>}
           <button type="submit" className="login-button">
-            Đăng Nhập
+            <span>Mở Khóa</span>
+            <span className="button-heart">💖</span>
           </button>
         </form>
       </div>
@@ -46,4 +78,3 @@ function Login({ setIsAuthenticated }) {
 }
 
 export default Login;
-
