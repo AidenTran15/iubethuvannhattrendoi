@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './BeenTogether.css';
 
+// Ngày bắt đầu: 24/12/2025 (constant, không thay đổi)
+const START_DATE = new Date('2025-12-24T00:00:00');
+
 function BeenTogether() {
   const navigate = useNavigate();
   const [timeTogether, setTimeTogether] = useState({
@@ -12,18 +15,15 @@ function BeenTogether() {
     seconds: 0
   });
 
-  // Ngày bắt đầu: 24/12/2025
-  const startDate = new Date('2025-12-24T00:00:00');
-
   useEffect(() => {
     const calculateTime = () => {
       const now = new Date();
-      const diff = now - startDate;
+      const diff = now - START_DATE;
 
       if (diff > 0) {
         // Tính số tháng
         let months = 0;
-        let tempDate = new Date(startDate);
+        let tempDate = new Date(START_DATE);
         while (tempDate < now) {
           tempDate.setMonth(tempDate.getMonth() + 1);
           if (tempDate <= now) {
@@ -35,7 +35,7 @@ function BeenTogether() {
         }
 
         // Tính số ngày còn lại sau khi trừ tháng
-        const dateAfterMonths = new Date(startDate);
+        const dateAfterMonths = new Date(START_DATE);
         dateAfterMonths.setMonth(dateAfterMonths.getMonth() + months);
         const daysDiff = now - dateAfterMonths;
         
@@ -105,7 +105,7 @@ function BeenTogether() {
 
         <div className="start-date-box">
           <span className="date-label">Ngày bắt đầu</span>
-          <span className="date-value">{formatDate(startDate)}</span>
+          <span className="date-value">{formatDate(START_DATE)}</span>
         </div>
 
         <div className="time-display">
