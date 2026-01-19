@@ -33,8 +33,8 @@ function Home() {
       <div className="home-content">
         <div className="welcome-section">
           <div className="main-heart">💕</div>
-          <h1 className="home-title">Welcome Back</h1>
-          <p className="home-subtitle">Chọn một trong những điều đặc biệt của chúng ta</p>
+          <h1 className="home-title">Welcome Cục Cứt Húi</h1>
+
         </div>
         
         <div className="buttons-container">
@@ -46,7 +46,7 @@ function Home() {
               <span className="button-icon">📸</span>
               <div className="button-text">
                 <span className="button-title">Our Memory</span>
-                <span className="button-subtitle">Kỷ niệm của chúng ta</span>
+
               </div>
             </div>
             <div className="button-glow"></div>
@@ -60,7 +60,6 @@ function Home() {
               <span className="button-icon">💑</span>
               <div className="button-text">
                 <span className="button-title">Been Together</span>
-                <span className="button-subtitle">Thời gian bên nhau</span>
               </div>
             </div>
             <div className="button-glow"></div>

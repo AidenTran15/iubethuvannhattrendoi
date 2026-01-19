@@ -101,7 +101,6 @@ function BeenTogether() {
         <div className="header-section">
           <div className="main-heart">💑</div>
           <h1 className="main-title">Been Together</h1>
-          <p className="subtitle">Từ ngày chúng ta bắt đầu</p>
         </div>
 
         <div className="start-date-box">

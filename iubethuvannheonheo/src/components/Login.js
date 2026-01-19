@@ -48,9 +48,8 @@ function Login({ setIsAuthenticated }) {
       </div>
 
       <div className="login-box">
-        <div className="heart-icon">💕</div>
+        <div className="heart-icon"></div>
         <h1 className="login-title">The Day We Got Together</h1>
-        <p className="login-subtitle">Nhập mật khẩu để tiếp tục</p>
         <form onSubmit={handleSubmit} className="login-form">
           <div className="input-wrapper">
             <input
@@ -69,7 +68,7 @@ function Login({ setIsAuthenticated }) {
           {error && <p className="error-message">{error}</p>}
           <button type="submit" className="login-button">
             <span>Mở Khóa</span>
-            <span className="button-heart">💖</span>
+            <span className="button-heart"></span>
           </button>
         </form>
       </div>
