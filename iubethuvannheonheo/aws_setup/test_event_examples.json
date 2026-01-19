@@ -1,0 +1,67 @@
+{
+  "examples": {
+    "simple_test": {
+      "description": "Test event đơn giản với ảnh 1x1 pixel",
+      "event": {
+        "date": "2025-12-24",
+        "image": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+        "filename": "test_image.png",
+        "contentType": "image/png"
+      }
+    },
+    "test_with_jpeg": {
+      "description": "Test event với JPEG",
+      "event": {
+        "date": "2025-12-24",
+        "image": "/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/wA",
+        "filename": "test.jpg",
+        "contentType": "image/jpeg"
+      }
+    },
+    "test_missing_date": {
+      "description": "Test event thiếu date (sẽ trả về lỗi 400)",
+      "event": {
+        "image": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+        "filename": "test.png",
+        "contentType": "image/png"
+      }
+    },
+    "test_missing_image": {
+      "description": "Test event thiếu image (sẽ trả về lỗi 400)",
+      "event": {
+        "date": "2025-12-24",
+        "filename": "test.png",
+        "contentType": "image/png"
+      }
+    }
+  },
+  "instructions": {
+    "how_to_use": [
+      "1. Copy event JSON từ một trong các examples trên",
+      "2. Mở AWS Lambda Console",
+      "3. Chọn function 'upload-memory-to-s3'",
+      "4. Click tab 'Test'",
+      "5. Chọn 'Create new event'",
+      "6. Paste JSON vào Event JSON editor",
+      "7. Click 'Test' để chạy",
+      "8. Xem kết quả trong Execution results"
+    ],
+    "expected_results": {
+      "success": {
+        "statusCode": 200,
+        "body": {
+          "message": "Upload successful",
+          "url": "https://iubethuvannheonheo-memories.s3.amazonaws.com/memories/2025-12-24/...",
+          "key": "memories/2025-12-24/..."
+        }
+      },
+      "error_missing_fields": {
+        "statusCode": 400,
+        "body": {
+          "error": "Missing required fields: date and image"
+        }
+      }
+    }
+  }
+}
+

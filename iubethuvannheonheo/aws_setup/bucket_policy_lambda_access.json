@@ -1,0 +1,35 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowLambdaAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::493885330050:role/webthuvan-role-trp7mccw"
+      },
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": "arn:aws:s3:::iubethuvannheonheo-memories/*"
+    },
+    {
+      "Sid": "AllowLambdaListBucket",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::493885330050:role/webthuvan-role-trp7mccw"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::iubethuvannheonheo-memories"
+    },
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::iubethuvannheonheo-memories/*"
+    }
+  ]
+}
+

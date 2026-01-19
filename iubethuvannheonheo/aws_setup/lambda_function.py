@@ -51,12 +51,13 @@ def lambda_handler(event, context):
         s3_key = f"memories/{date}/{timestamp}_{filename}"
         
         # Upload lên S3
+        # Lưu ý: Không dùng ACL vì bucket đã tắt ACLs
+        # Public access được control qua bucket policy
         s3_client.put_object(
             Bucket=bucket_name,
             Key=s3_key,
             Body=image_bytes,
-            ContentType=content_type,
-            ACL='public-read'  # Cho phép public read
+            ContentType=content_type
         )
         
         # Tạo URL

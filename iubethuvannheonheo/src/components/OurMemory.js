@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { S3Client, PutObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3';
 import './OurMemory.css';
 
 // AWS Configuration
@@ -10,6 +9,7 @@ const AWS_CONFIG = {
   bucketName: 'iubethuvannheonheo-memories', // Tên bucket S3
   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID || '',
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY || '',
+  apiGatewayUrl: 'https://5sygni79g3.execute-api.ap-southeast-2.amazonaws.com/prod', // API Gateway endpoint
 };
 
 function OurMemory() {
@@ -63,48 +63,71 @@ function OurMemory() {
     }
   }, []);
 
-  // Upload images to S3
-  const uploadImages = async (files, date) => {
-    if (!AWS_CONFIG.accessKeyId || !AWS_CONFIG.secretAccessKey) {
-      alert('AWS credentials chưa được cấu hình. Vui lòng cấu hình trong file .env');
-      return;
-    }
+  // Convert file to base64
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        // Remove data URL prefix (data:image/jpeg;base64,)
+        const base64 = reader.result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
 
+  // Upload images via API Gateway
+  const uploadImages = async (files, date) => {
     setUploading(true);
     const dateKey = formatDateKey(date);
-    const client = getS3Client();
 
     try {
-      const uploadPromises = Array.from(files).map(async (file, index) => {
-        const fileName = `${dateKey}_${Date.now()}_${index}_${file.name}`;
-        const key = `memories/${dateKey}/${fileName}`;
-
-        // Get presigned URL for upload
-        const command = new PutObjectCommand({
-          Bucket: AWS_CONFIG.bucketName,
-          Key: key,
-          ContentType: file.type,
-        });
-
-        const presignedUrl = await getSignedUrl(client, command, { expiresIn: 3600 });
-
-        // Upload file using presigned URL
-        const uploadResponse = await fetch(presignedUrl, {
-          method: 'PUT',
-          body: file,
-          headers: {
-            'Content-Type': file.type,
-          },
-        });
-
-        if (!uploadResponse.ok) {
-          throw new Error(`Upload failed for ${file.name}`);
-        }
-
-        return {
-          key,
-          url: `https://${AWS_CONFIG.bucketName}.s3.${AWS_CONFIG.region}.amazonaws.com/${key}`,
+      const uploadPromises = Array.from(files).map(async (file) => {
+        // Convert file to base64
+        const imageBase64 = await fileToBase64(file);
+        
+        // Prepare request body
+        const requestBody = {
+          date: dateKey,
+          image: imageBase64,
+          filename: file.name,
+          contentType: file.type || 'image/jpeg',
         };
+
+        // Call API Gateway
+        const response = await fetch(AWS_CONFIG.apiGatewayUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        });
+
+        const result = await response.json();
+        
+        // Handle different response formats from API Gateway
+        let responseData;
+        if (result.statusCode) {
+          // Lambda proxy integration format: { statusCode: 200, body: "..." }
+          responseData = typeof result.body === 'string' ? JSON.parse(result.body) : result.body;
+        } else {
+          // Direct response format
+          responseData = result;
+        }
+        
+        if (!response.ok || (result.statusCode && result.statusCode !== 200)) {
+          throw new Error(responseData.error || `Upload failed: ${response.statusText}`);
+        }
+        
+        if (responseData.url) {
+          return {
+            key: responseData.key || responseData.url.split('/').pop(),
+            url: responseData.url,
+          };
+        } else {
+          throw new Error(responseData.error || 'Upload failed: No URL returned');
+        }
       });
 
       const uploadedMemories = await Promise.all(uploadPromises);
@@ -115,8 +138,11 @@ function OurMemory() {
         [dateKey]: [...(prev[dateKey] || []), ...uploadedMemories],
       }));
 
-      alert('Upload thành công!');
+      alert(`Upload thành công ${uploadedMemories.length} hình ảnh!`);
       setSelectedFiles([]);
+      
+      // Reload memories to show new uploads
+      loadMemories(date);
     } catch (error) {
       console.error('Error uploading:', error);
       alert('Lỗi khi upload: ' + error.message);
@@ -223,7 +249,6 @@ function OurMemory() {
       <div className="memory-content">
         <div className="memory-header">
           <h1 className="memory-title">Our Memory</h1>
-          <p className="memory-subtitle">Lưu giữ những khoảnh khắc đẹp của chúng ta</p>
         </div>
 
         <div className="memory-layout">
