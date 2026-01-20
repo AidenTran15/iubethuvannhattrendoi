@@ -60,8 +60,9 @@ def lambda_handler(event, context):
             ContentType=content_type
         )
         
-        # Tạo URL
-        image_url = f"https://{bucket_name}.s3.amazonaws.com/{s3_key}"
+        # Tạo URL với region
+        region = os.environ.get('AWS_REGION', 'ap-southeast-2')
+        image_url = f"https://{bucket_name}.s3.{region}.amazonaws.com/{s3_key}"
         
         return {
             'statusCode': 200,

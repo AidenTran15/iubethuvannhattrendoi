@@ -9,7 +9,10 @@ const AWS_CONFIG = {
   bucketName: 'iubethuvannheonheo-memories', // Tên bucket S3
   accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID || '',
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY || '',
-  apiGatewayUrl: 'https://5sygni79g3.execute-api.ap-southeast-2.amazonaws.com/prod', // API Gateway endpoint
+  apiGatewayBaseUrl: 'https://n2ltuq2f9i.execute-api.ap-southeast-2.amazonaws.com/prod', // API Gateway base URL
+  // Will try /upload first, then fallback to root
+  uploadUrl: 'https://5sygni79g3.execute-api.ap-southeast-2.amazonaws.com/prod/', // API Gateway endpoint for upload
+  listMemoriesUrl: 'https://n2ltuq2f9i.execute-api.ap-southeast-2.amazonaws.com/prod/', // API Gateway endpoint for list
 };
 
 function OurMemory() {
@@ -33,33 +36,148 @@ function OurMemory() {
   };
 
   // Load memories for a specific date
+  // Use API Gateway to list memories (no credentials needed on frontend)
   const loadMemories = useCallback(async (date) => {
-    if (!AWS_CONFIG.accessKeyId || !AWS_CONFIG.secretAccessKey) {
-      console.warn('AWS credentials not configured');
-      return;
-    }
+    const dateKey = formatDateKey(date);
+    
+    // Try using S3 SDK if credentials are available (for development)
+    if (AWS_CONFIG.accessKeyId && AWS_CONFIG.secretAccessKey) {
+      try {
+        const client = getS3Client();
+        const command = new ListObjectsV2Command({
+          Bucket: AWS_CONFIG.bucketName,
+          Prefix: `memories/${dateKey}/`,
+        });
 
+        const response = await client.send(command);
+        const memoryUrls = (response.Contents || []).map((item) => ({
+          key: item.Key,
+          url: `https://${AWS_CONFIG.bucketName}.s3.${AWS_CONFIG.region}.amazonaws.com/${item.Key}`,
+          lastModified: item.LastModified,
+        }));
+
+        setMemories((prev) => ({
+          ...prev,
+          [dateKey]: memoryUrls,
+        }));
+        console.log(`Loaded ${memoryUrls.length} memories for ${dateKey} using S3 SDK`);
+        return;
+      } catch (error) {
+        console.warn('Error loading with S3 SDK:', error);
+      }
+    }
+    
+    // Use API Gateway to list memories
     try {
-      const dateKey = formatDateKey(date);
-      const client = getS3Client();
-      const command = new ListObjectsV2Command({
-        Bucket: AWS_CONFIG.bucketName,
-        Prefix: `memories/${dateKey}/`,
+      // Clean URL (remove trailing slash if exists)
+      const baseUrl = AWS_CONFIG.listMemoriesUrl.replace(/\/$/, '');
+      // Try /list endpoint first, fallback to root with query param
+      let listUrl = `${baseUrl}/list?date=${dateKey}`;
+      console.log(`Loading memories from API Gateway: ${listUrl}`);
+      
+      let response = await fetch(listUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       });
 
-      const response = await client.send(command);
-      const memoryUrls = (response.Contents || []).map((item) => ({
-        key: item.Key,
-        url: `https://${AWS_CONFIG.bucketName}.s3.${AWS_CONFIG.region}.amazonaws.com/${item.Key}`,
-        lastModified: item.LastModified,
-      }));
+      // If /list doesn't exist (404), try root endpoint with query param
+      if (response.status === 404 || response.status === 403) {
+        console.log('Endpoint /list not found, trying root endpoint...');
+        listUrl = `${baseUrl}?date=${dateKey}`;
+        response = await fetch(listUrl, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      }
 
-      setMemories((prev) => ({
-        ...prev,
-        [dateKey]: memoryUrls,
-      }));
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Get response text first to handle different formats
+      const responseText = await response.text();
+      console.log('API Gateway raw response:', responseText);
+      
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (e) {
+        console.error('Failed to parse JSON:', e);
+        throw new Error(`Invalid response from server: ${responseText.substring(0, 100)}`);
+      }
+      
+      console.log('API Gateway parsed response:', result);
+      
+      // Handle API Gateway response format
+      let responseData;
+      if (result.statusCode !== undefined) {
+        // Lambda proxy integration format
+        if (typeof result.body === 'string') {
+          try {
+            responseData = JSON.parse(result.body);
+          } catch (e) {
+            console.error('Failed to parse body:', e);
+            responseData = { error: result.body };
+          }
+        } else {
+          responseData = result.body;
+        }
+      } else {
+        // Direct response format
+        responseData = result;
+      }
+      
+      console.log('Final response data:', responseData);
+      
+      if (responseData.memories && Array.isArray(responseData.memories)) {
+        const memoryUrls = responseData.memories.map((memory) => ({
+          key: memory.key,
+          url: memory.url,
+          lastModified: memory.lastModified ? new Date(memory.lastModified) : null,
+        }));
+
+        setMemories((prev) => ({
+          ...prev,
+          [dateKey]: memoryUrls,
+        }));
+        
+        // Also save to localStorage for offline access
+        try {
+          localStorage.setItem(`memories_${dateKey}`, JSON.stringify(memoryUrls));
+        } catch (error) {
+          console.warn('Failed to save to localStorage:', error);
+        }
+        
+        console.log(`✅ Loaded ${memoryUrls.length} memories for ${dateKey} from API Gateway`);
+      } else {
+        console.warn('No memories array in response:', responseData);
+        // If no memories, set empty array
+        setMemories((prev) => ({
+          ...prev,
+          [dateKey]: [],
+        }));
+      }
     } catch (error) {
-      console.error('Error loading memories:', error);
+      console.error('Error loading memories from API Gateway:', error);
+      
+      // Fallback to localStorage if API fails
+      try {
+        const stored = localStorage.getItem(`memories_${dateKey}`);
+        if (stored) {
+          const storedMemories = JSON.parse(stored);
+          setMemories((prev) => ({
+            ...prev,
+            [dateKey]: storedMemories,
+          }));
+          console.log(`Loaded ${storedMemories.length} memories from localStorage for ${dateKey}`);
+        }
+      } catch (localError) {
+        console.warn('Error loading from localStorage:', localError);
+      }
     }
   }, []);
 
@@ -84,65 +202,142 @@ function OurMemory() {
 
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
-        // Convert file to base64
-        const imageBase64 = await fileToBase64(file);
-        
-        // Prepare request body
-        const requestBody = {
-          date: dateKey,
-          image: imageBase64,
-          filename: file.name,
-          contentType: file.type || 'image/jpeg',
-        };
-
-        // Call API Gateway
-        const response = await fetch(AWS_CONFIG.apiGatewayUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(requestBody),
-        });
-
-        const result = await response.json();
-        
-        // Handle different response formats from API Gateway
-        let responseData;
-        if (result.statusCode) {
-          // Lambda proxy integration format: { statusCode: 200, body: "..." }
-          responseData = typeof result.body === 'string' ? JSON.parse(result.body) : result.body;
-        } else {
-          // Direct response format
-          responseData = result;
-        }
-        
-        if (!response.ok || (result.statusCode && result.statusCode !== 200)) {
-          throw new Error(responseData.error || `Upload failed: ${response.statusText}`);
-        }
-        
-        if (responseData.url) {
-          return {
-            key: responseData.key || responseData.url.split('/').pop(),
-            url: responseData.url,
+        try {
+          // Convert file to base64
+          const imageBase64 = await fileToBase64(file);
+          
+          // Prepare request body
+          const requestBody = {
+            date: dateKey,
+            image: imageBase64,
+            filename: file.name,
+            contentType: file.type || 'image/jpeg',
           };
-        } else {
-          throw new Error(responseData.error || 'Upload failed: No URL returned');
+
+          console.log('Uploading file:', file.name, 'Size:', file.size, 'bytes');
+
+          // Try /upload endpoint first, fallback to root if needed
+          let uploadUrl = AWS_CONFIG.uploadUrl;
+          console.log('Trying upload URL:', uploadUrl);
+          
+          let response = await fetch(uploadUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+          });
+
+          // If /upload doesn't exist (404 or 403), try root endpoint
+          if (response.status === 404 || response.status === 403) {
+            console.log('Endpoint /upload not found, trying root endpoint...');
+            uploadUrl = AWS_CONFIG.apiGatewayBaseUrl;
+            response = await fetch(uploadUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(requestBody),
+            });
+          }
+
+          console.log('API Response status:', response.status, response.statusText);
+          
+          // Get response text first to see raw data
+          const responseText = await response.text();
+          console.log('API Response raw text:', responseText);
+          
+          let result;
+          try {
+            result = JSON.parse(responseText);
+          } catch (e) {
+            console.error('Failed to parse JSON:', e);
+            throw new Error(`Invalid response from server: ${responseText.substring(0, 100)}`);
+          }
+          
+          console.log('API Response parsed:', result);
+          
+          // Handle different response formats from API Gateway
+          let responseData;
+          if (result.statusCode !== undefined) {
+            // Lambda proxy integration format: { statusCode: 200, body: "..." }
+            if (typeof result.body === 'string') {
+              try {
+                responseData = JSON.parse(result.body);
+              } catch (e) {
+                console.error('Failed to parse body:', e);
+                responseData = { error: result.body };
+              }
+            } else {
+              responseData = result.body;
+            }
+          } else {
+            // Direct response format
+            responseData = result;
+          }
+          
+          console.log('Final response data:', responseData);
+          
+          // Check for errors
+          if (!response.ok || (result.statusCode && result.statusCode !== 200)) {
+            const errorMsg = responseData.error || responseData.message || `Upload failed: ${response.statusText}`;
+            console.error('Upload error:', errorMsg, 'Full response:', responseData);
+            throw new Error(errorMsg);
+          }
+          
+          // Check if we have a URL
+          if (!responseData.url) {
+            console.error('No URL in response:', responseData);
+            throw new Error(responseData.error || 'Upload failed: No URL returned from server');
+          }
+          
+          // Ensure URL includes region if needed
+          let imageUrl = responseData.url;
+          if (imageUrl && !imageUrl.includes(AWS_CONFIG.region) && imageUrl.includes('s3.amazonaws.com')) {
+            // Fix URL to include region
+            const key = responseData.key || imageUrl.split('/').slice(-1)[0];
+            imageUrl = `https://${AWS_CONFIG.bucketName}.s3.${AWS_CONFIG.region}.amazonaws.com/${key}`;
+          }
+          
+          console.log('✅ Upload successful! URL:', imageUrl, 'Key:', responseData.key);
+          
+          return {
+            key: responseData.key || imageUrl.split('/').slice(-1)[0],
+            url: imageUrl,
+          };
+        } catch (fileError) {
+          console.error(`Error uploading file ${file.name}:`, fileError);
+          throw fileError;
         }
       });
 
       const uploadedMemories = await Promise.all(uploadPromises);
+      console.log('All uploads completed:', uploadedMemories);
 
-      // Update local state
-      setMemories((prev) => ({
-        ...prev,
-        [dateKey]: [...(prev[dateKey] || []), ...uploadedMemories],
-      }));
+      // Update local state immediately (for instant feedback)
+      setMemories((prev) => {
+        const newMemories = {
+          ...prev,
+          [dateKey]: [...(prev[dateKey] || []), ...uploadedMemories],
+        };
+        
+        // Also save to localStorage for persistence
+        try {
+          localStorage.setItem(`memories_${dateKey}`, JSON.stringify(newMemories[dateKey]));
+        } catch (error) {
+          console.warn('Failed to save to localStorage:', error);
+        }
+        
+        return newMemories;
+      });
 
       alert(`Upload thành công ${uploadedMemories.length} hình ảnh!`);
       setSelectedFiles([]);
       
-      // Reload memories to show new uploads
-      loadMemories(date);
+      // Reload memories from S3 to ensure we have all images (including newly uploaded)
+      console.log(`🔄 Reloading memories from S3 for ${dateKey}...`);
+      await loadMemories(date);
+      console.log(`✅ Memories reloaded for ${dateKey}`);
     } catch (error) {
       console.error('Error uploading:', error);
       alert('Lỗi khi upload: ' + error.message);

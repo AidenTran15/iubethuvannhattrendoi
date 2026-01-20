@@ -11,7 +11,7 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
+    <div className="App">
         <Routes>
           <Route 
             path="/login" 
@@ -47,7 +47,7 @@ function App() {
           />
           <Route path="/" element={<Navigate to="/login" replace />} />
         </Routes>
-      </div>
+    </div>
     </Router>
   );
 }
