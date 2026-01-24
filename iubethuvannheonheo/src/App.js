@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Home from './components/Home';
 import OurMemory from './components/OurMemory';
 import BeenTogether from './components/BeenTogether';
+import Letter from './components/Letter';
 import './App.css';
 
 function App() {
@@ -42,6 +43,14 @@ function App() {
             element={
               isAuthenticated ? 
                 <BeenTogether /> : 
+                <Navigate to="/login" replace />
+            } 
+          />
+          <Route 
+            path="/letter" 
+            element={
+              isAuthenticated ? 
+                <Letter /> : 
                 <Navigate to="/login" replace />
             } 
           />

@@ -64,6 +64,19 @@ function Home() {
             </div>
             <div className="button-glow"></div>
           </button>
+          
+          <button 
+            className="home-button letter-button"
+            onClick={() => navigate('/letter')}
+          >
+            <div className="button-content">
+              <span className="button-icon">💌</span>
+              <div className="button-text">
+                <span className="button-title">Thư Cho Em</span>
+              </div>
+            </div>
+            <div className="button-glow"></div>
+          </button>
         </div>
       </div>
     </div>
