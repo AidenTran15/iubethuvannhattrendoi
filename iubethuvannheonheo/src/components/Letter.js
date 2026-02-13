@@ -6,9 +6,9 @@ function Letter() {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpening, setIsOpening] = useState(false);
-  const [letterContent, setLetterContent] = useState(`Gửi Cục Cứt Húi yêu dấu của anh,
+  const [letterContent, setLetterContent] = useState(`Gửi Cục Cứt Húi yêu dấu của anh bé,
 
-Cảm ơn cục cứt húi vì đã ở bên cạnh anh bé nhee, anh bé rất trân trọng và cảm thấy hạnh phúc khi có em bé bên cạnh. Tuy mới bên cạnh em bé có 1 tháng thui mà anh bé thấy rất quen thuộc và gần gũi với em bé như là mình đã bên cạnh nhau lâu lắm rùi. Cảm ơn em bé vì đã đến bên cạnh và chăm sóc cho anh bé nhe. Chúng mình cùng nhau cố gắng đi thật xa với nhau nhe bé yêu. Anh yêu em bé nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu. Nhiều tới mức hông biết là bao nhiêu luôn. Anh bé hông giỏi văn vở nên anh bé hông biết viết làm sao cho hay, anh bé viết ra những lời trong lòng anh bé hoi
+Cảm ơn cục cứt húi vì đã đến và ở bên cạnh anh bé nhe, anh bé rất trân trọng và cảm thấy hạnh phúc khi có em bé bên cạnh. Tuy mới bên cạnh em bé có 1 tháng thui mà anh bé thấy rất quen thuộc và gần gũi với em bé như là mình đã bên cạnh nhau lâu lắm rùi. Cảm ơn em bé vì đã đến bên cạnh và chăm sóc cho anh bé nhe. Chúng mình cùng nhau cố gắng đi thật xa với nhau nhe bé yêu. Anh yêu em bé nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu. Nhiều tới mức hông biết là bao nhiêu luôn. Anh bé hông giỏi văn vở nên anh bé hông biết viết làm sao cho hay, anh bé viết ra những lời trong lòng anh bé hoi. Cảm ơn em bé nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu nhìu ạ.
 `);
 
   const handleOpenEnvelope = () => {
@@ -42,16 +42,19 @@ Cảm ơn cục cứt húi vì đã ở bên cạnh anh bé nhee, anh bé rất 
             <div className={`envelope ${isOpening ? 'opened' : ''}`} onClick={handleOpenEnvelope}>
               <div className="envelope-back"></div>
               <div className="envelope-front">
-                <div className="envelope-flap"></div>
+                <div className="envelope-flap">
+                  <div className="wax-seal"></div>
+                </div>
                 <div className="envelope-paper">
                   <div className="letter-preview">
                     <p>💌</p>
+                
                     <p>Open here</p>
                   </div>
                 </div>
               </div>
             </div>
-           
+         
           </div>
         ) : (
           <div className="opened-letter-container">
@@ -69,7 +72,7 @@ Cảm ơn cục cứt húi vì đã ở bên cạnh anh bé nhee, anh bé rất 
               </div>
               <div className="letter-footer">
                 <p className="signature">Anh yêu bé Vân nhèo nhèoooo</p>
-                <p className="signature-name">Trần Tuấn Kiêt mập thúi</p>
+                <p className="signature-name">Kiệt mập thúi</p>
               </div>
             </div>
             <button className="back-button" onClick={handleBack}>
