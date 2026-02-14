@@ -1,0 +1,369 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+/* Valentine page - romantic red/pink theme */
+.valentine-letter-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ffe8ec 0%, #ffd6e0 25%, #ffcce0 50%, #ffe0e8 75%, #ffeef2 100%);
+  background-size: 400% 400%;
+  animation: valentineBg 12s ease infinite;
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes valentineBg {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Floating hearts - more visible, Valentine style */
+.valentine-hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.valentine-hearts .v-heart {
+  position: absolute;
+  font-size: 26px;
+  opacity: 0.35;
+  animation: valentineFloat 18s infinite ease-in-out;
+}
+
+.valentine-hearts .v-heart:nth-child(1) { left: 8%; animation-delay: 0s; animation-duration: 16s; }
+.valentine-hearts .v-heart:nth-child(2) { left: 25%; animation-delay: 2s; animation-duration: 20s; }
+.valentine-hearts .v-heart:nth-child(3) { left: 50%; animation-delay: 4s; animation-duration: 18s; }
+.valentine-hearts .v-heart:nth-child(4) { left: 72%; animation-delay: 6s; animation-duration: 22s; }
+.valentine-hearts .v-heart:nth-child(5) { left: 88%; animation-delay: 8s; animation-duration: 19s; }
+.valentine-hearts .v-heart:nth-child(6) { left: 15%; animation-delay: 10s; animation-duration: 21s; }
+
+@keyframes valentineFloat {
+  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  12% { opacity: 0.35; }
+  88% { opacity: 0.35; }
+  100% { transform: translateY(-80px) rotate(200deg); opacity: 0; }
+}
+
+.valentine-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: valentineFadeIn 0.8s ease-out;
+}
+
+@keyframes valentineFadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Valentine envelope - red/pink */
+.valentine-envelope-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.valentine-envelope {
+  position: relative;
+  width: 400px;
+  height: 300px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  perspective: 1000px;
+  filter: drop-shadow(0 12px 32px rgba(180, 60, 80, 0.25));
+}
+
+.valentine-envelope-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #e8a0b0 0%, #d87088 50%, #c85a72 100%);
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2), inset 0 0 40px rgba(255, 255, 255, 0.15);
+  z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: none;
+}
+
+.valentine-envelope-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.valentine-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(135deg, #f0b0c0 0%, #e890a0 50%, #d87088 100%);
+  border-radius: 10px 10px 0 0;
+  transform-origin: top;
+  transform: rotateX(0deg);
+  transition: transform 1.2s ease-in-out;
+  z-index: 3;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15), inset 0 4px 12px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: none;
+}
+
+.valentine-envelope.opened .valentine-flap {
+  transform: rotateX(-180deg);
+}
+
+.valentine-envelope:hover {
+  transform: scale(1.03);
+  filter: drop-shadow(0 14px 40px rgba(180, 60, 80, 0.3));
+}
+
+.valentine-envelope.opened {
+  pointer-events: none;
+  cursor: default;
+}
+
+.valentine-paper {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background: linear-gradient(to bottom, #fff8fa 0%, #ffffff 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1), inset 0 0 24px rgba(255, 182, 193, 0.15);
+  z-index: 1;
+  transition: transform 0.8s ease 0.5s, opacity 0.5s ease 0.3s;
+  border: 1px solid rgba(255, 182, 193, 0.35);
+}
+
+.valentine-envelope.opened .valentine-paper {
+  transform: translateY(-20px) scale(0.95);
+  opacity: 0;
+}
+
+.valentine-preview {
+  text-align: center;
+  font-family: 'Dancing Script', cursive;
+  position: relative;
+  z-index: 2;
+  color: #b84a62;
+}
+
+.valentine-preview p:first-child {
+  font-size: 48px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 2px 4px rgba(184, 74, 98, 0.2));
+}
+
+.valentine-preview p:nth-child(2) {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(184, 74, 98, 0.25);
+}
+
+.valentine-open-text {
+  font-size: 16px !important;
+  font-family: 'Poppins', sans-serif !important;
+  opacity: 0.85;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* Red wax seal */
+.valentine-seal {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 46px;
+  height: 46px;
+  background: radial-gradient(circle, #c85a72 0%, #a83a52 50%, #8b2a42 100%);
+  border-radius: 50%;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25), inset 0 2px 6px rgba(255, 255, 255, 0.2), inset 0 -2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 4;
+  border: 2px solid rgba(139, 42, 66, 0.5);
+}
+
+.valentine-seal::before {
+  content: '❤️';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* Opened letter - Valentine style */
+.valentine-opened-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  animation: valentineLetterAppear 1s ease-out;
+}
+
+@keyframes valentineLetterAppear {
+  0% { opacity: 0; transform: translateY(40px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.valentine-letter-paper {
+  width: 100%;
+  max-width: 700px;
+  background: linear-gradient(to bottom, #fffafc 0%, #ffffff 100%);
+  border-radius: 12px;
+  padding: 48px;
+  box-shadow: 0 12px 40px rgba(180, 60, 80, 0.2), 0 0 0 1px rgba(255, 182, 193, 0.3);
+  position: relative;
+  animation: valentinePaperUnfold 1.2s ease-out;
+  border: 2px solid rgba(255, 182, 193, 0.4);
+}
+
+.valentine-letter-paper::before {
+  content: '';
+  position: absolute;
+  left: 70px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: repeating-linear-gradient(to bottom, transparent, transparent 22px, rgba(255, 182, 193, 0.4) 22px, rgba(255, 182, 193, 0.4) 24px);
+}
+
+@keyframes valentinePaperUnfold {
+  0% { transform: scale(0.85) rotateY(-8deg); opacity: 0; }
+  100% { transform: scale(1) rotateY(0); opacity: 1; }
+}
+
+.valentine-header {
+  text-align: center;
+  margin-bottom: 36px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(255, 182, 193, 0.5);
+}
+
+.valentine-header h2 {
+  font-family: 'Dancing Script', cursive;
+  color: #b84a62;
+  font-size: 40px;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 12px rgba(255, 182, 193, 0.4);
+}
+
+.valentine-body {
+  margin-bottom: 36px;
+}
+
+.valentine-textarea {
+  width: 100%;
+  min-height: 380px;
+  border: none;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+  color: #5a3a45;
+  background: transparent;
+  resize: vertical;
+  padding: 0;
+  white-space: pre-wrap;
+}
+
+.valentine-textarea::placeholder {
+  color: #c8909a;
+  font-style: italic;
+}
+
+.valentine-footer {
+  text-align: right;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(255, 182, 193, 0.5);
+}
+
+.valentine-signature {
+  font-family: 'Dancing Script', cursive;
+  color: #b84a62;
+  font-size: 24px;
+  margin: 8px 0;
+}
+
+.valentine-name {
+  font-family: 'Dancing Script', cursive;
+  color: #a83a52;
+  font-size: 26px;
+  font-weight: 700;
+  margin: 4px 0;
+}
+
+.valentine-back-btn {
+  padding: 14px 36px;
+  background: linear-gradient(135deg, #e87090 0%, #d85a78 100%);
+  color: white;
+  border: none;
+  border-radius: 28px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(216, 90, 120, 0.45);
+}
+
+.valentine-back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(216, 90, 120, 0.55);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .valentine-envelope {
+    width: 320px;
+    height: 240px;
+  }
+  .valentine-letter-paper {
+    padding: 32px 28px;
+  }
+  .valentine-header h2 {
+    font-size: 34px;
+  }
+  .valentine-textarea {
+    min-height: 300px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .valentine-envelope {
+    width: 280px;
+    height: 210px;
+  }
+  .valentine-letter-paper {
+    padding: 24px 20px;
+  }
+  .valentine-letter-paper::before {
+    left: 45px;
+  }
+  .valentine-header h2 {
+    font-size: 28px;
+  }
+}

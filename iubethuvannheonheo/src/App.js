@@ -5,6 +5,8 @@ import Home from './components/Home';
 import OurMemory from './components/OurMemory';
 import BeenTogether from './components/BeenTogether';
 import Letter from './components/Letter';
+import LetterValentine from './components/LetterValentine';
+import Bouquet from './components/Bouquet';
 import './App.css';
 
 function App() {
@@ -51,6 +53,22 @@ function App() {
             element={
               isAuthenticated ? 
                 <Letter /> : 
+                <Navigate to="/login" replace />
+            } 
+          />
+          <Route 
+            path="/letter-valentine" 
+            element={
+              isAuthenticated ? 
+                <LetterValentine /> : 
+                <Navigate to="/login" replace />
+            } 
+          />
+          <Route 
+            path="/bouquet" 
+            element={
+              isAuthenticated ? 
+                <Bouquet /> : 
                 <Navigate to="/login" replace />
             } 
           />

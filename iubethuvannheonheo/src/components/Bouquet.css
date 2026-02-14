@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap');
+
+.bouquet-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(160deg, #fff5f7 0%, #ffe8ef 30%, #ffdde8 60%, #fff0f5 100%);
+  padding: 40px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.bouquet-bg-hearts {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.2;
+}
+
+.bouquet-bg-hearts .bh {
+  position: absolute;
+  font-size: 36px;
+  animation: bouquetFloat 20s infinite ease-in-out;
+}
+
+.bouquet-bg-hearts .bh:nth-child(1) { left: 5%; animation-delay: 0s; }
+.bouquet-bg-hearts .bh:nth-child(2) { left: 25%; animation-delay: 3s; }
+.bouquet-bg-hearts .bh:nth-child(3) { left: 50%; animation-delay: 6s; }
+.bouquet-bg-hearts .bh:nth-child(4) { left: 75%; animation-delay: 9s; }
+.bouquet-bg-hearts .bh:nth-child(5) { left: 90%; animation-delay: 12s; }
+.bouquet-bg-hearts .bh:nth-child(6) { left: 15%; animation-delay: 15s; }
+
+@keyframes bouquetFloat {
+  0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  15% { opacity: 0.25; }
+  85% { opacity: 0.25; }
+  100% { transform: translateY(-100px) rotate(180deg); opacity: 0; }
+}
+
+.bouquet-wrap {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  animation: bouquetAppear 1s ease-out;
+}
+
+@keyframes bouquetAppear {
+  from { opacity: 0; transform: scale(0.9) translateY(30px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.bouquet-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 42px;
+  font-weight: 700;
+  color: #b84a62;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 12px rgba(255, 182, 193, 0.5);
+}
+
+.bouquet-container {
+  position: relative;
+  display: inline-block;
+  filter: drop-shadow(0 20px 50px rgba(180, 60, 80, 0.25));
+}
+
+/* Wrapping paper - frosted glass style, big and elegant */
+.bouquet-paper {
+  position: relative;
+  width: 340px;
+  height: 400px;
+  background: linear-gradient(180deg,
+    rgba(255, 252, 253, 0.85) 0%,
+    rgba(255, 240, 245, 0.75) 50%,
+    rgba(255, 228, 235, 0.85) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 28px 28px 14px 14px;
+  box-shadow:
+    inset 0 0 80px rgba(255, 255, 255, 0.5),
+    0 20px 55px rgba(180, 60, 80, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.6);
+  padding: 28px;
+  overflow: visible;
+}
+
+/* Ribbon - softer, gift-wrap style */
+.bouquet-ribbon {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 110%;
+  height: 24px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.3) 0%,
+    #e85a78 15%,
+    #d84a68 50%,
+    #e85a78 85%,
+    rgba(255,255,255,0.3) 100%);
+  border-radius: 6px;
+  box-shadow: 0 3px 12px rgba(200, 60, 80, 0.35);
+  z-index: 5;
+}
+
+.bouquet-ribbon.vertical {
+  width: 24px;
+  height: 110%;
+  left: 50%;
+  top: 50%;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.3) 0%,
+    #e85a78 15%,
+    #d84a68 50%,
+    #e85a78 85%,
+    rgba(255,255,255,0.3) 100%);
+}
+
+/* Flowers - clustered like a real bouquet, center focus */
+.flowers-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.flower {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.15));
+  animation: flowerSway 4s ease-in-out infinite;
+}
+
+/* Roses - center and prominent (main focus) */
+.flower.rose { font-size: 54px; }
+.flower.rose-1 { top: 6%; left: 38%; font-size: 50px; animation-delay: 0s; }
+.flower.rose-2 { top: 4%; left: calc(50% - 34px); font-size: 68px; animation-delay: 0.5s; }
+.flower.rose-3 { top: 8%; right: 36%; font-size: 50px; animation-delay: 1s; }
+.flower.rose-4 { top: 24%; left: 18%; font-size: 48px; animation-delay: 0.3s; }
+.flower.rose-5 { top: 22%; right: 18%; font-size: 48px; animation-delay: 0.8s; }
+.flower.rose-6 { top: 38%; left: calc(50% - 28px); font-size: 56px; animation-delay: 0.2s; }
+.flower.rose-7 { top: 32%; right: 38%; font-size: 46px; animation-delay: 0.6s; }
+
+/* Tulips - lower left & right */
+.flower.tulip { font-size: 42px; }
+.flower.tulip-1 { bottom: 30%; left: 24%; animation-delay: 0.4s; }
+.flower.tulip-2 { bottom: 26%; left: 38%; animation-delay: 0.7s; }
+.flower.tulip-3 { bottom: 28%; right: 26%; animation-delay: 0.1s; }
+
+/* Cherry blossom - fill between */
+.flower.cherry { font-size: 38px; }
+.flower.cherry-1 { top: 18%; left: 44%; animation-delay: 0.9s; }
+.flower.cherry-2 { bottom: 38%; left: 32%; animation-delay: 0.25s; }
+.flower.cherry-3 { top: 34%; right: 44%; animation-delay: 0.55s; }
+
+/* Hibiscus - corners */
+.flower.hibiscus { font-size: 44px; }
+.flower.h-1 { bottom: 32%; left: 10%; animation-delay: 0.15s; }
+.flower.h-2 { bottom: 30%; right: 12%; animation-delay: 0.65s; }
+
+/* Blossom - accent */
+.flower.blossom { font-size: 40px; }
+.flower.b-1 { top: 28%; left: 30%; animation-delay: 0.45s; }
+.flower.b-2 { bottom: 24%; right: 36%; animation-delay: 0.35s; }
+
+@keyframes flowerSway {
+  0%, 100% { transform: rotate(-2deg) scale(1); }
+  50% { transform: rotate(2deg) scale(1.02); }
+}
+
+.leaves-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.leaf {
+  position: absolute;
+  font-size: 28px;
+  opacity: 0.85;
+  animation: leafSway 3s ease-in-out infinite;
+}
+
+.leaf-1 { bottom: 12%; left: 20%; animation-delay: 0s; transform: rotate(-28deg); }
+.leaf-2 { bottom: 14%; right: 22%; animation-delay: 0.5s; transform: rotate(22deg); }
+.leaf-3 { bottom: 6%; left: 44%; animation-delay: 0.2s; transform: rotate(-12deg); }
+.leaf-4 { bottom: 8%; right: 40%; animation-delay: 0.7s; transform: rotate(18deg); }
+.leaf-5 { bottom: 10%; left: 56%; animation-delay: 0.3s; transform: rotate(8deg); }
+.leaf-6 { bottom: 12%; right: 52%; animation-delay: 0.6s; transform: rotate(-18deg); }
+
+@keyframes leafSway {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+.bouquet-message {
+  font-family: 'Dancing Script', cursive;
+  font-size: 28px;
+  color: #a83a52;
+  margin-top: 28px;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(255, 182, 193, 0.4);
+}
+
+.bouquet-back-btn {
+  margin-top: 32px;
+  padding: 14px 36px;
+  background: linear-gradient(135deg, #e87090 0%, #d85a78 100%);
+  color: white;
+  border: none;
+  border-radius: 28px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(216, 90, 120, 0.45);
+}
+
+.bouquet-back-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(216, 90, 120, 0.55);
+}
+
+@media (max-width: 768px) {
+  .bouquet-paper {
+    width: 300px;
+    height: 360px;
+    padding: 22px;
+  }
+  .flower.rose { font-size: 46px; }
+  .flower.rose-2 { font-size: 56px; }
+  .flower.tulip { font-size: 36px; }
+  .flower.cherry { font-size: 32px; }
+  .flower.hibiscus { font-size: 38px; }
+  .flower.blossom { font-size: 34px; }
+  .bouquet-title { font-size: 36px; }
+  .bouquet-message { font-size: 24px; }
+}
+
+@media (max-width: 480px) {
+  .bouquet-paper {
+    width: 280px;
+    height: 340px;
+    padding: 18px;
+  }
+  .flower.rose { font-size: 42px; }
+  .flower.rose-2 { font-size: 50px; }
+  .flower.tulip { font-size: 32px; }
+  .flower.cherry { font-size: 28px; }
+  .leaf { font-size: 22px; }
+  .bouquet-title { font-size: 32px; }
+  .bouquet-message { font-size: 22px; }
+}

@@ -77,6 +77,32 @@ function Home() {
             </div>
             <div className="button-glow"></div>
           </button>
+
+          <button 
+            className="home-button valentine-button"
+            onClick={() => navigate('/letter-valentine')}
+          >
+            <div className="button-content">
+              <span className="button-icon">💕</span>
+              <div className="button-text">
+                <span className="button-title">Thư Valentine</span>
+              </div>
+            </div>
+            <div className="button-glow"></div>
+          </button>
+
+          <button 
+            className="home-button bouquet-button"
+            onClick={() => navigate('/bouquet')}
+          >
+            <div className="button-content">
+              <span className="button-icon">💐</span>
+              <div className="button-text">
+                <span className="button-title">Bó Hoa Tặng Em</span>
+              </div>
+            </div>
+            <div className="button-glow"></div>
+          </button>
         </div>
       </div>
     </div>

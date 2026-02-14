@@ -71,6 +71,13 @@ Cảm ơn cục cứt húi vì đã đến và ở bên cạnh anh bé nhe, anh 
                 />
               </div>
               <div className="letter-footer">
+                <button
+                  type="button"
+                  className="letter-bouquet-btn"
+                  onClick={() => navigate('/bouquet')}
+                >
+                  💐 Bấm để nhận bó hoa
+                </button>
                 <p className="signature">Anh yêu bé Vân nhèo nhèoooo</p>
                 <p className="signature-name">Kiệt mập thúi</p>
               </div>
