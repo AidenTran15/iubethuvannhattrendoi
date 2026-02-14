@@ -300,6 +300,29 @@
   border-top: 2px solid rgba(255, 182, 193, 0.5);
 }
 
+.valentine-bouquet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #e87090 0%, #d85a78 100%);
+  color: white;
+  border: none;
+  border-radius: 26px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 18px rgba(216, 90, 120, 0.4);
+}
+
+.valentine-bouquet-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(216, 90, 120, 0.5);
+}
+
 .valentine-signature {
   font-family: 'Dancing Script', cursive;
   color: #b84a62;

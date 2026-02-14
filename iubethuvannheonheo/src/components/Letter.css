@@ -469,6 +469,30 @@
   border-top: 1px solid rgba(220, 210, 200, 0.4);
 }
 
+.letter-bouquet-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #e8c8d0 0%, #d8b0b8 100%);
+  color: #6b4a52;
+  border: 1px solid rgba(180, 140, 150, 0.5);
+  border-radius: 24px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.letter-bouquet-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(180, 100, 120, 0.25);
+  background: linear-gradient(135deg, #e0b8c0 0%, #d0a0a8 100%);
+}
+
 .signature {
   font-family: 'Dancing Script', cursive;
   color: #8b7a6b;
